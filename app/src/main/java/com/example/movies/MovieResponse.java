@@ -17,4 +17,11 @@ public class MovieResponse {
     public List<Movie> getMovies() {
         return movies;
     }
+
+    @Override
+    public String toString() {
+        return "MovieResponse{" +
+                "movies=" + movies +
+                '}';
+    }
 }
