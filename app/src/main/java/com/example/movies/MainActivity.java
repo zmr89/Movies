@@ -3,6 +3,8 @@ package com.example.movies;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,17 +19,24 @@ public class MainActivity extends AppCompatActivity {
 
     private MainViewModel mainViewModel;
     private static final String TAG = "MainActivity";
+    private RecyclerView recyclerView;
+    private MovieAdapter movieAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        recyclerView = findViewById(R.id.recyclerViewMovies);
+        movieAdapter = new MovieAdapter();
+        recyclerView.setAdapter(movieAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.getMoviesLD().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> movies) {
-                Log.d(TAG, movies.toString());
+                movieAdapter.setMovieList(movies);
             }
         });
         mainViewModel.loadMovies();
