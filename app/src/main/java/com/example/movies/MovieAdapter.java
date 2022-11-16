@@ -1,6 +1,7 @@
 package com.example.movies;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,15 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private List<Movie> movieList = new ArrayList<>();
+    private OnReachEndListener onReachEndListener;
 
     public void setMovieList(List<Movie> movieList) {
         this.movieList = movieList;
         notifyDataSetChanged();
+    }
+
+    public void setOnReachEndListener(OnReachEndListener onReachEndListener) {
+        this.onReachEndListener = onReachEndListener;
     }
 
     @NonNull
@@ -34,9 +40,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return new MovieViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movieList.get(position);
+        Log.d("MovieAdapter", "onBindViewHolder position " + position);
 
         if (movie.getPoster() != null){
             Glide.with(holder.itemView).load(movie.getPoster().getUrl()).into(holder.imageViewPoster);
@@ -61,12 +69,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         DecimalFormat decimalFormat = new DecimalFormat("0.0");
         String rating = decimalFormat.format(movie.getRating().getKp());
         holder.textViewRating.setText(rating);
+
+        if (position >= (movieList.size() - 10)){
+            Log.d("MovieAdapter", "movieList.size()-10: " + (movieList.size() - 10));
+            if (onReachEndListener != null) {
+                onReachEndListener.onReachEnd();
+            }
+        }
+
     }
+
 
     @Override
     public int getItemCount() {
         return movieList.size();
     }
+
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageViewPoster;
@@ -78,7 +96,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             imageViewPoster = itemView.findViewById(R.id.imageViewPoster);
             textViewRating = itemView.findViewById(R.id.textViewRating);
         }
-
-
     }
+
+    interface OnReachEndListener {
+        void onReachEnd();
+    }
+
 }
