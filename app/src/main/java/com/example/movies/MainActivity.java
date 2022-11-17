@@ -6,16 +6,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     progressBarLoading.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        movieAdapter.setOnClickMovieItemListener(new MovieAdapter.OnClickMovieItemListener() {
+            @Override
+            public void onClickMovieItem(Movie movie) {
+                Intent intent = MovieDetailActivity.newIntent(MainActivity.this, movie);
+                startActivity(intent);
             }
         });
 
