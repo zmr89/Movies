@@ -31,6 +31,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void loadMovies(){
+//Для того чтобы не начиналась новая загрузка пока не завершится предыдущая нужна нижеследующая проверка isLoading. Новая загрузка до окончания старой начинается т.к. в MovieAdapter условия начала загрузки if (position >= (movieList.size() - 10)), поэтому при резкой прокрутке вниз position на 10 пунктов опережает (movieList.size() - 10) и загрузка страницы происходит 10 раз подряд
         Boolean isLoading = isLoadingLD.getValue();
         if (isLoading != null && isLoading){
             return;
