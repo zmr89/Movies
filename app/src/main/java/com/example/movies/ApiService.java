@@ -12,8 +12,7 @@ public interface ApiService {
     @GET("movie?token=XYV3HPG-1SB4PV1-JB06YPA-P2PMZJ5&field=id")
     Single<MovieResponseFromId> loadMovieResponseFromId(@Query("search") int id);
 
-//    @GET("review?token=XYV3HPG-1SB4PV1-JB06YPA-P2PMZJ5&field=movieId&search=326&limit=10&sortField=reviewLikes&sortType=-1")
-//
-
+    @GET("review?token=XYV3HPG-1SB4PV1-JB06YPA-P2PMZJ5&field=movieId&limit=10&sortField=reviewLikes&sortType=-1")
+    Single<ReviewResponse> loadReviewResponse(@Query("search") int search);
 
 }

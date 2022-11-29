@@ -3,7 +3,6 @@ package com.example.movies;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -18,20 +17,23 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class MovieDetailActivity extends AppCompatActivity {
 
     private static final String TAG_MOVIE = "movie";
     private static final String TAG = "MovieDetailActivity";
-
     private ImageView imageViewPoster;
     private TextView textViewTitle;
     private TextView textViewYear;
     private TextView textViewDescription;
-    private RecyclerView recyclerView;
-
-    private MovieDetailViewModel movieDetailViewModel;
+    private RecyclerView recyclerViewTrailer;
+    private RecyclerView recyclerViewReview;
     private TrailersAdapter trailersAdapter;
-
+    private ReviewAdapter reviewAdapter;
+    private MovieDetailViewModel movieDetailViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +50,16 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewYear.setText(String.valueOf(movie.getYear()));
         textViewDescription.setText(movie.getDescription());
 
-
-
         trailersAdapter = new TrailersAdapter();
+        recyclerViewTrailer.setAdapter(trailersAdapter);
 
         movieDetailViewModel.loadMovieResponseFromId(movie.getId());
         movieDetailViewModel.getListTrailersLV().observe(this, new Observer<List<Trailer>>() {
             @Override
             public void onChanged(List<Trailer> trailers) {
                 trailersAdapter.setTrailerList(trailers);
-                Log.d(TAG,  trailers.toString());
             }
         });
-
-
-        recyclerView.setAdapter(trailersAdapter);
-//LayoutManager для recyclerView установил в разметке activity_movie_datail
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         trailersAdapter.setOnClickTrailerListener(new TrailersAdapter.OnClickTrailerListener() {
             @Override
@@ -75,6 +70,16 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
         });
 
+        reviewAdapter = new ReviewAdapter();
+        recyclerViewReview.setAdapter(reviewAdapter);
+
+        movieDetailViewModel.loadReviewResponse(movie.getId());
+        movieDetailViewModel.getListReviewMoviesLV().observe(this, new Observer<List<ReviewMovie>>() {
+            @Override
+            public void onChanged(List<ReviewMovie> reviewMovies) {
+                reviewAdapter.setReviewList(reviewMovies);
+            }
+        });
     }
 
     public static Intent newIntent(Context context, Movie movie) {
@@ -88,6 +93,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewTitle = findViewById(R.id.textViewTitle);
         textViewYear = findViewById(R.id.textViewYear);
         textViewDescription = findViewById(R.id.textViewDescription);
-        recyclerView = findViewById(R.id.recyclerViewDetail);
+        recyclerViewTrailer = findViewById(R.id.recyclerViewTrailer);
+        recyclerViewReview = findViewById(R.id.recyclerViewReview);
     }
 }

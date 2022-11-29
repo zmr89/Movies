@@ -8,11 +8,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -20,8 +22,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MovieDetailViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Trailer>> listTrailersLV = new MutableLiveData<>();
+    private final MutableLiveData<List<ReviewMovie>> listReviewMoviesLV = new MutableLiveData<>();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private static final String TAG = "MovieDetailViewModel";
+
 
     public MovieDetailViewModel(@NonNull Application application) {
         super(application);
@@ -52,8 +56,36 @@ public class MovieDetailViewModel extends AndroidViewModel {
         compositeDisposable.add(disposable);
     }
 
+    public void loadReviewResponse(int id){
+        Disposable disposable = ApiServiceFactory.API_SERVICE.loadReviewResponse(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<ReviewResponse, List<ReviewMovie>>() {
+                    @Override
+                    public List<ReviewMovie> apply(ReviewResponse reviewResponse) throws Throwable {
+                        return reviewResponse.getReviewMovieList();
+                    }
+                })
+                .subscribe(new Consumer<List<ReviewMovie>>() {
+                    @Override
+                    public void accept(List<ReviewMovie> reviewMovieList) throws Throwable {
+                        listReviewMoviesLV.setValue(reviewMovieList);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d(TAG, throwable.getMessage());
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
     public LiveData<List<Trailer>> getListTrailersLV() {
         return listTrailersLV;
+    }
+
+    public LiveData<List<ReviewMovie>> getListReviewMoviesLV() {
+        return listReviewMoviesLV;
     }
 
     @Override
