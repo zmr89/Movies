@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClickMovieItem(Movie movie) {
                 Intent intent = MovieDetailActivity.newIntent(MainActivity.this, movie);
+                startActivity(intent);
+            }
+        });
+
+        FloatingActionButton floatingActionButtonFavorite = findViewById(R.id.floatingActionButtonFavorite);
+        floatingActionButtonFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = FavoriteMoviesActivity.newIntent(MainActivity.this);
                 startActivity(intent);
             }
         });
