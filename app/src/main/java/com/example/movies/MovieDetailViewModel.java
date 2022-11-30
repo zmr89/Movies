@@ -24,11 +24,13 @@ public class MovieDetailViewModel extends AndroidViewModel {
     private final MutableLiveData<List<Trailer>> listTrailersLV = new MutableLiveData<>();
     private final MutableLiveData<List<ReviewMovie>> listReviewMoviesLV = new MutableLiveData<>();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final MovieDAO movieDAO;
     private static final String TAG = "MovieDetailViewModel";
 
 
     public MovieDetailViewModel(@NonNull Application application) {
         super(application);
+        movieDAO = MovieDatabase.getInstance(application).getMovieDao();
     }
 
     public void loadMovieResponseFromId(int id){
@@ -77,6 +79,40 @@ public class MovieDetailViewModel extends AndroidViewModel {
                         Log.d(TAG, throwable.getMessage());
                     }
                 });
+        compositeDisposable.add(disposable);
+    }
+
+    public LiveData<Movie> getFavoriteMovie(int movieId) {
+        return movieDAO.getFavoriteMovieDB(movieId);
+    }
+
+    public void insertMovieDB(Movie movie) {
+        Disposable disposable = movieDAO.insertMovieDB(movie).subscribeOn(Schedulers.io()).subscribe(new Action() {
+            @Override
+            public void run() throws Throwable {
+                Log.d(TAG, "insertMovieDB() successful");
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Throwable {
+                Log.d(TAG, throwable.getMessage());
+            }
+        });
+        compositeDisposable.add(disposable);
+    }
+
+    public void deleteMovie (int movieId) {
+        Disposable disposable = movieDAO.deleteMovieDB(movieId).subscribeOn(Schedulers.io()).subscribe(new Action() {
+            @Override
+            public void run() throws Throwable {
+                Log.d(TAG, "insertMovieDB() successful");
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Throwable {
+                Log.d(TAG, throwable.getMessage());
+            }
+        });
         compositeDisposable.add(disposable);
     }
 
