@@ -74,6 +74,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         DecimalFormat decimalFormat = new DecimalFormat("0.0");
         String rating = decimalFormat.format(movie.getRating().getKp());
         holder.textViewRating.setText(rating);
+        holder.textViewMovieName.setText(movie.getName());
+        holder.textViewYear.setText(String.valueOf(movie.getYear()));
 
         if (position >= (movieList.size() - 10)){
             Log.d("MovieAdapter", "movieList.size()-10: " + (movieList.size() - 10));
@@ -102,12 +104,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageViewPoster;
         private final TextView textViewRating;
+        private final TextView textViewMovieName;
+        private final TextView textViewYear;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageViewPoster = itemView.findViewById(R.id.imageViewPoster);
             textViewRating = itemView.findViewById(R.id.textViewRating);
+            textViewMovieName = itemView.findViewById(R.id.textViewMovieName);
+            textViewYear = itemView.findViewById(R.id.textViewYear);
         }
     }
 
