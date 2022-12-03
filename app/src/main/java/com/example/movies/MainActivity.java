@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Популярные фильмы");
 
         recyclerView = findViewById(R.id.recyclerViewMovies);
         progressBarLoading = findViewById(R.id.progressBarLoading);
@@ -83,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menuItemFavorite) {
             Intent intent = FavoriteMoviesActivity.newIntent(this);
+            startActivity(intent);
+        }
+        if (item.getItemId() == R.id.menuItemSearch) {
+            Intent intent = SearchActivity.newIntent(this);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

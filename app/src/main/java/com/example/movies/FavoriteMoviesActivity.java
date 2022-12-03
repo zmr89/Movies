@@ -22,6 +22,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
+        setTitle("Избранные фильмы");
 
         movieAdapter = new MovieAdapter();
         recyclerViewFavorite = findViewById(R.id.recyclerViewFavorite);
