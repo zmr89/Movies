@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Movies</string>
     <string name="menuItemFavorite">Избраное</string>
+    <string name="search">Поиск</string>
+    <string name="enter_movie_name">Введите название фильма</string>
+    <string name="search_button">Поиск</string>
+    <string name="title_trailers">Трейлеры:</string>
+    <string name="title_reviews">Отзывы:</string>
 </resources>

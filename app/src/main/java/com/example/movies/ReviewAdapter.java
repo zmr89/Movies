@@ -43,11 +43,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
         String reviewType = reviewMovie.getType();
         int colorResId = android.R.color.holo_orange_light;;
-        switch (reviewType){
-            case TYPE_POSITIVE : colorResId = android.R.color.holo_green_light;
-            break;
-            case TYPE_NEGATIVE : colorResId = android.R.color.holo_red_light;
-            break;
+        if (reviewType != null) {
+            switch (reviewType){
+                case TYPE_POSITIVE : colorResId = android.R.color.holo_green_light;
+                    break;
+                case TYPE_NEGATIVE : colorResId = android.R.color.holo_red_light;
+                    break;
+            }
         }
         int color = ContextCompat.getColor(holder.itemView.getContext(), colorResId);
         holder.linearLayoutReviewItem.setBackgroundColor(color);

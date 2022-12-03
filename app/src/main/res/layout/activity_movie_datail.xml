@@ -53,6 +53,15 @@
             tools:text="Description of movie"
             />
 
+        <TextView
+            android:id="@+id/textViewTitleTrailer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_trailers"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/textViewDescription"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTrailer"
             android:layout_width="match_parent"
@@ -60,8 +69,18 @@
             android:nestedScrollingEnabled="false"
             android:padding="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/textViewDescription"
+            app:layout_constraintTop_toBottomOf="@id/textViewTitleTrailer"
             tools:listitem="@layout/trailers_item" />
+
+        <TextView
+            android:id="@+id/textViewTitleReviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_reviews"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/recyclerViewTrailer"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewReview"
@@ -71,7 +90,7 @@
             tools:listitem="@layout/review_item"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="false"
-            app:layout_constraintTop_toBottomOf="@id/recyclerViewTrailer"
+            app:layout_constraintTop_toBottomOf="@id/textViewTitleReviews"
             />
 
         <ImageView
